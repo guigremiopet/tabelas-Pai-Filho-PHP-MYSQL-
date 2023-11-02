@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<link rel="stylesheet" href="Styles.css">
+<html>
+<head>
+    <meta charset="UTF-8">
+    
+    <title>Tabela de Pais e Filhos</title>
+</head>
+<body>
+    <div>
+        <h1>Tabela de Pais e Filhos</h1>
+        <div>
+            <label for="nomePai">Nome do Pai:</label>
+            <input type="text" id="nomePai" />
+        </div>
+        <div>
+            <label for="nomeFilho">Nome do Filho:</label>
+            <input type="text" id="nomeFilho" onchange="adicionarLinhaFilho(this.value)" />
+        </div>
+           
+        <div type="text" id="filhosContainer" onchange="adicionarLinhaFilho(this.value)">
+           
+        </div>
+        <div>
+            <td>
+                <button id="chatbox" onclick="adicionarPaiFilho()">Adicionar</button>
+            </td>
+        </div>
+         <div>
+            <button onclick="Getfamilia()">Buscar Dados</button>
+        </div>
+    </td>
+        
+
+
+        </body></html>
+    </td>
+    </div>
+    <table id="data-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Dad</th>
+                <th>Children</th>
+            </tr>
+        </thead>
+        <tbody id="table-body">
+        </tbody>
+    </table>
+
+    <script>
+
+        function adicionarLinhaFilho() 
+        {
+            var nomeFilho = document.getElementById("nomeFilho").value.trim();
+
+            if (nomeFilho.length > 0) 
+            {
+                // Crie um novo campo de entrada para o nome do filho
+                var novoInput = document.createElement('input');
+                novoInput.type = "text";
+                novoInput.className = "filhoInput";
+                var filhosContainer = document.getElementById("filhosContainer");
+                filhosContainer.appendChild(novoInput);
+            }
+        }
+
+        function Getfamilia() 
+        {
+            let chatbox = document.getElementById("chatbox");
+            let table = document.createElement("table");
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "index.php?function=Getfamilia", true);
+            xhr.onreadystatechange = function () 
+            {
+                if (xhr.readyState === 4 && xhr.status === 200) 
+                {
+                    console.log(xhr.responseText);
+                    DataPopulate(xhr.responseText);
+                }
+            }
+            // Envie a solicitação
+            xhr.send();
+        }
+        function DataPopulate(json) 
+        {
+            var jsonData = JSON.parse(json);
+            var tableBody = document.getElementById('table-body');
+            tableBody.innerHTML = "";
+            // Populate the table with data
+            for (let i = 0; i < jsonData.length; i++) 
+            {
+                var tmp = jsonData[i];
+                var row = document.createElement('tr');
+                row.innerHTML = '<td>' + tmp.Id + '</td><td>' + tmp.Pai + '</td><td>' + createChildrenList(tmp.Filhos) + '</td>';
+                tableBody.appendChild(row);
+            }
+
+            // Function to create a list of children with one child per line
+            function createChildrenList(children) 
+            {
+                var childrenList = '';
+                children.forEach(function (child) 
+                {
+                    childrenList += child + '<br>';
+                });
+                return childrenList;
+            }
+        }
+
+
+        function adicionarPaiFilho() 
+        {
+            let chatbox = document.getElementById("chatbox");
+            var xhr = new XMLHttpRequest();
+            var url = "index.php?function=adicionarPaiFilho";
+
+            var nomePai = document.getElementById("nomePai").value;
+            var son = document.getElementById("nomeFilho").value;
+            var nomeFilhosInputs = document.querySelectorAll("#filhosContainer input");
+            var nomeFilhos = [];
+
+            nomeFilhosInputs.forEach(function(input) 
+            {
+                var nomeFilho = input.value.trim();
+                if (nomeFilho !== "") 
+                {
+                    nomeFilhos.push(nomeFilho);
+                }
+            });
+            var data = new FormData();
+            data.append('nomePai', nomePai);
+            data.append('nomesFilhos[]', son);
+            nomeFilhos.forEach(function(nomeFilho, index) 
+            {
+                data.append('nomesFilhos[]', nomeFilho);
+                
+            });
+            xhr.open("POST", url, true);
+            xhr.onreadystatechange = function() 
+            {
+                if (xhr.readyState === 4 && xhr.status === 200) 
+                {
+                    console.log(xhr.responseText); // Mostra a resposta do PHP no console
+                }
+            };
+            for (var pair of data.entries()) 
+            {
+                console.log(pair[0] + ': ' + pair[1]);
+            }
+            xhr.send(data);
+        }
+
+
+
+        
+
+    </script>
+</body>
+</html>

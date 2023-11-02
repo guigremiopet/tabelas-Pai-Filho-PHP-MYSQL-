@@ -1,0 +1,44 @@
+table 
+    {
+    border-collapse: collapse;
+    width: 100%;
+    }
+.Tabula { border:1px solid transparent;
+
+
+}
+th, td 
+    {
+    border: 1px solid transparent;
+    padding: 10px; /* Adicione o padding desejado aqui */
+    text-align: initial;
+
+}
+
+/* Estilos CSS para a aparência da página */
+body {
+    font-family: Arial, sans-serif;
+}
+
+div {
+    margin: 10px;
+}
+
+.filhoInput {
+    margin: 5px;
+}
+
+/* Estilos específicos para as chatboxes */
+chatboxesContainer {
+    border: 1px;
+    padding: 10px;
+}
+
+/* Adicione mais estilos conforme necessário */
+
+filhosContainer {
+    /* Adicione aqui os estilos desejados */
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    padding: 10px;
+}
