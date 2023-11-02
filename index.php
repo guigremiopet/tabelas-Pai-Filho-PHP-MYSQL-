@@ -8,38 +8,6 @@ define('PASSWORD', 'Pettersen.18');
 
 try 
 {
-    /*if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['function'])) 
-    {
-        $functionName = $_GET['function'];
-        $opcoes = array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8');
-        $Conexao = new PDO("mysql:host=" . SERVER . ";dbname=" . DBNAME, USER, PASSWORD, $opcoes);
-        if ($functionName === 'Getfamilia') 
-        {
-            // Your code to execute the 'Getfamilia' function
-            $SQL = 'CALL GetPaiFilhosJSON();';
-            $STM = $Conexao->prepare($SQL);
-            $STM->execute();
-            $result = $STM->fetchAll(PDO::FETCH_ASSOC);
-
-            $response = array();
-            foreach ($result as $row) 
-            {
-                $dataResult = json_decode($row['DATA_RESULT'], true);
-                $response[] = array(
-                    'Id' => $dataResult['Id'],
-                    'Pai' => $dataResult['Pai'],
-                    'Filhos' => $dataResult['Filhos']
-                );
-            // Output the result as JSON
-            echo json_encode($response);
-            }
-        } 
-        else 
-        {
-            // Handle other functions if needed
-            echo "Function not found";
-        }
-    }*/
     if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['function'])) {
         $functionName = $_GET['function'];
         $opcoes = array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8');
