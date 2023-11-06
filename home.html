@@ -9,30 +9,27 @@
 <body>
     <div>
         <h1>Tabela de Pais e Filhos</h1>
-        <div>
-            <label for="nomePai">Nome do Pai:</label>
-            <input type="text" id="nomePai" />
-        </div>
-        <div>
-            <label for="nomeFilho">Nome do Filho:</label>
-            <input type="text" id="nomeFilho" onchange="adicionarLinhaFilho(this.value)" />
-        </div>
-           
-        <div type="text" id="filhosContainer" onchange="adicionarLinhaFilho(this.value)">
-           
-        </div>
-        <div>
-            <td>
+        <ul>
+            <ol>
+                <label for="nomePai">Nome do Pai:</label>
+                <input type="text" id="nomePai" />
+            </ol>
+            <ol>
+                <label for="nomeFilho">Nome do Filho:</label>
+                <input type="text" id="nomeFilho" onchange="adicionarLinhaFilho(this.value)" />
+                <div type="text" id="filhosContainer" onchange="adicionarLinhaFilho(this.value)">
+            </ol>
+            
+        </ul>
+        <ul>
+            <ol >
                 <button id="chatbox" onclick="adicionarPaiFilho()">Adicionar</button>
-            </td>
-        </div>
-         <div>
-            <button onclick="Getfamilia()">Buscar Dados</button>
-        </div>
+                <button onclick="Getfamilia()">Buscar Dados</button>
+                <button onclick="excluirPai()">Deletar Dados</button>
+            </ol>
+        </ul>
     </td>
         
-
-
         </body></html>
     </td>
     </div>
@@ -50,7 +47,44 @@
 
     <script>
 
-        function adicionarLinhaFilho() 
+        function excluirPai() 
+        {
+            var idPai = prompt("Digite o ID do pai que deseja excluir:");
+            if (idPai !== null && !isNaN(idPai)) 
+            {
+                // Chamar a função de exclusão com o ID do pai
+                DeletarPai(parseInt(idPai));
+            } 
+            else 
+            {
+                alert("ID do pai inválido ou não fornecido.");
+            }
+        }
+        function DeletarPai(idPai) {
+            var xhr = new XMLHttpRequest();
+            var url = "index.php?function=DeletarPai";
+
+            // Configurar a solicitação POST
+            xhr.open("POST", url, true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+            // Configurar a função de retorno da solicitação AJAX
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        var resposta = xhr.responseText;
+                        alert(resposta); // Exiba a mensagem do servidor para o usuário
+                    } else {
+                        alert("Erro ao excluir pai e filhos.");
+                    }
+                }
+            };
+
+            // Enviar os dados para o servidor
+            xhr.send("idPai=" + idPai);
+        }
+
+       function adicionarLinhaFilho() 
         {
             var nomeFilho = document.getElementById("nomeFilho").value.trim();
 
@@ -87,7 +121,7 @@
             var jsonData = JSON.parse(json);
             var tableBody = document.getElementById('table-body');
             tableBody.innerHTML = "";
-            // Populate the table with data
+           
             for (let i = 0; i < jsonData.length; i++) 
             {
                 var tmp = jsonData[i];
@@ -95,8 +129,7 @@
                 row.innerHTML = '<td>' + tmp.Id + '</td><td>' + tmp.Pai + '</td><td>' + createChildrenList(tmp.Filhos) + '</td>';
                 tableBody.appendChild(row);
             }
-
-            // Function to create a list of children with one child per line
+            
             function createChildrenList(children) 
             {
                 var childrenList = '';
@@ -107,8 +140,6 @@
                 return childrenList;
             }
         }
-
-
         function adicionarPaiFilho() 
         {
             let chatbox = document.getElementById("chatbox");
@@ -150,11 +181,6 @@
             }
             xhr.send(data);
         }
-
-
-
-        
-
     </script>
 </body>
 </html>
