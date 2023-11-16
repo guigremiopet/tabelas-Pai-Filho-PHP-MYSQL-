@@ -74,7 +74,9 @@
                     if (xhr.status === 200) {
                         var resposta = xhr.responseText;
                         alert(resposta); // Exiba a mensagem do servidor para o usuário
-                    } else {
+                    } 
+                    else 
+                    {
                         alert("Erro ao excluir pai e filhos.");
                     }
                 }
@@ -94,7 +96,10 @@
                 var novoInput = document.createElement('input');
                 novoInput.type = "text";
                 novoInput.className = "filhoInput";
+                var novolabel = document.createElement('label');
+                novolabel.textContent = 'filho';
                 var filhosContainer = document.getElementById("filhosContainer");
+                filhosContainer.appendChild(novolabel);
                 filhosContainer.appendChild(novoInput);
             }
         }
